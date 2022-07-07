@@ -4,8 +4,14 @@ import pickle
 from sklearn.preprocessing import StandardScaler
 
 st.title('Customer segmentation using RFM and Kmeans')
-st.sidebar.markdown('## Data Import')
-uploaded_file = st.sidebar.file_uploader("Choose a CSV file", type="xlsx")
+st.sidebar.markdown("""## Import file:
+                    please not that the following columns are neccessary :
+                     -CustomerID
+                     -Quantity
+                     -InvoiceDate
+                     -UnitPrice
+                        """)
+uploaded_file = st.sidebar.file_uploader("Choose a XSLX file", type="xlsx")
 
 
 if uploaded_file is not None:
@@ -41,7 +47,7 @@ if uploaded_file is not None:
     RFMK['cluster'].replace({0:'Average Customer',1:'VIP customer',2:'Lost Customer',3:'Best Customer'},inplace=True)
     Data_w_clust=pd.merge(df,RFMK[['CustomerID','cluster']],on='CustomerID', how='left')
     
-    st.subheader('Initial dataset wiith clusters for each customer')
+    st.subheader('Initial dataset with clusters for each customer')
     st.write(Data_w_clust)
     st.markdown("""
                 | Cluster | Customer type | RFM Characterictics | Action |
@@ -50,6 +56,10 @@ if uploaded_file is not None:
                 | 1 | VIP customer | Frequent and recent shoppers. Heavy spendings. | Potential to be target customers for launch of new luxury products. |
                 | 2 | Lost customer | Low frequency and spend ing amount adhas not placing an order recently. | Business might have lost them. Survey to be done on reason of being churned. Enhance the quality of products or services to avoid further losing. |
                 | 3 | Best Customer | Moderate receny(past 2 weeks) and frequency shoppers, make heavy spendings | Potential to be target customers for launch of new  products. |
+                """)
+                
+    st.markdown("""
+                ## You can now check the classe to which your customer belongs
                 """)
     filter = st.selectbox('Select customer', Data_w_clust['CustomerID'].unique())
     st.write(Data_w_clust[Data_w_clust['CustomerID']==filter])
