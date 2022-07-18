@@ -65,5 +65,3 @@ if uploaded_file is not None:
     st.write(Data_w_clust[Data_w_clust['CustomerID']==filter])
 else:
     st.sidebar.warning("You need to upload a csv or excel file")
-
-
